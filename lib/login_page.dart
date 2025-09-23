@@ -17,9 +17,26 @@ class _LoginPageState extends State<LoginPage> {
   // Simpan user terdaftar (sementara)
   final Map<String, String> registeredUsers = {};
 
+  // Tambahkan fungsi validasi email
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
   void _login() {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
+
+    // Validasi format email
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.orange,
+          content: Text("⚠️ Format email tidak valid"),
+        ),
+      );
+      return;
+    }
 
     if (registeredUsers[email] == password || registeredUsers.isEmpty) {
       Navigator.pushReplacement(
@@ -57,6 +74,17 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(
           backgroundColor: Colors.orange,
           content: Text("⚠️ Email dan Password wajib diisi"),
+        ),
+      );
+      return;
+    }
+
+    // Validasi format email
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.orange,
+          content: Text("⚠️ Format email tidak valid"),
         ),
       );
       return;

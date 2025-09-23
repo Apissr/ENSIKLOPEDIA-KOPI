@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
               // 🔽 Tambahan teks judul
               Text(
                 "Ensiklopedia Kopi",
-                style: GoogleFonts.lobster(
+                style: GoogleFonts.bungee(
                   fontSize: 32,
                   color: Colors.brown[800],
                   fontWeight: FontWeight.w600,
