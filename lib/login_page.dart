@@ -120,11 +120,14 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Image.asset(
                           'assets/images/logo.png',
+
+
                           fit: BoxFit.contain,
                         ),
                         const SizedBox(height: 10),
                         const Text(
                           "Login / Register",
+
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
