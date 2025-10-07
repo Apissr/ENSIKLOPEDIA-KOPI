@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Login App',
       theme: ThemeData(primarySwatch: Colors.indigo),
       home: const SplashScreen(),
+      
     );
   }
 }

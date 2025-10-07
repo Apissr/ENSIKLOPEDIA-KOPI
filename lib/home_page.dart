@@ -5,7 +5,8 @@ import 'models/kopi.dart';
 import 'detail_page.dart';
 import 'dummy_data.dart';
 import 'dart:math';
-import 'login_page.dart'; // ✅ tambahkan import login page
+import 'login_page.dart'; //
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -173,69 +174,107 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 4,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      children: [
-                        Hero(
-                          tag: 'kopi_${kopi.nama}_${index}', // unik tiap item
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.horizontal(
-                              left: Radius.circular(16),
-                            ),
-                            child: Image.asset(
-                              kopi.gambar,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.local_cafe,
-                                  size: 60, color: Colors.brown),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  kopi.nama,
-                                  style: GoogleFonts.merriweather(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  kopi.asal,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 13,
-                                    color: Colors.brown[700],
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "⭐ ${kopi.rating}",
-                                  style: GoogleFonts.poppins(fontSize: 13),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16),
+  ),
+  elevation: 4,
+  margin: const EdgeInsets.only(bottom: 12),
+  child: Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(16),
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.white,
+          Colors.brown.shade50,
+        ],
+      ),
+    ),
+    child: Row(
+      children: [
+        Hero(
+          tag: 'kopi_${kopi.nama}_${index}',
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(16),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(16),
+              ),
+              child: Image.asset(
+                kopi.gambar,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    Icon(Icons.local_cafe, size: 60, color: Colors.brown[300]),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  kopi.nama,
+                  style: GoogleFonts.merriweather(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, size: 16, color: Colors.brown[700]),
+                    const SizedBox(width: 4),
+                    Text(
+                      kopi.asal,
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        color: Colors.brown[700],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    ...List.generate(5, (index) => Icon(
+                      index < kopi.rating ? Icons.star : Icons.star_border,
+                      size: 16,
+                      color: Colors.amber,
+                    )),
+                    const SizedBox(width: 4),
+                    Text(
+                      kopi.rating.toString(),
+                      style: GoogleFonts.poppins(fontSize: 13),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+).animate()
+  .fadeIn()
+  .slideX(begin: -30, end: 0, delay: Duration(milliseconds: index * 100)),
                 );
               },
             ),
