@@ -1,5 +1,8 @@
 name: Deploy flutter web to github
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
