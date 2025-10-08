@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "Login / Register",
+                          "chava imupp",
 
                           style: TextStyle(
                             fontSize: 24,
