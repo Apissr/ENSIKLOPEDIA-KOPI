@@ -14,10 +14,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
 
-  // Simpan user terdaftar (sementara)
+
   final Map<String, String> registeredUsers = {};
 
-  // Tambahkan fungsi validasi email
   bool _isValidEmail(String email) {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);

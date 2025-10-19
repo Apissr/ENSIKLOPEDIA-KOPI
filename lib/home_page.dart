@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(height: 12),
 
-            // 🔍 Search Bar
+
             TextField(
               decoration: InputDecoration(
                 hintText: "Cari kopi favoritmu...",
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 8),
 
-            // ☕ List Kopi
+
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 20),

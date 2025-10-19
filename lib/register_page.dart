@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 
-// Data user sementara (global, hilang kalau app restart)
 Map<String, String> registeredUsers = {};
 
 class RegisterPage extends StatefulWidget {
