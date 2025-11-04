@@ -1,3 +1,6 @@
+// lib/home_page.dart
+// (TIMPA SEMUA KODE DENGAN INI)
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'models/kopi.dart';
@@ -6,6 +9,7 @@ import 'dummy_data.dart';
 import 'dart:math';
 import 'login_page.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'ensiklopedia_kopi_page.dart'; // <-- Halaman API
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -16,11 +20,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // --- State untuk UI Beranda ---
   String searchQuery = '';
   RoastLevel? selectedRoastLevel;
   ProcessingMethod? selectedProcess;
   late Kopi randomKopi;
   bool isDarkMode = false; // 🌙 Tema toggle
+
+  // --- State untuk Bottom Nav Bar ---
+  int _selectedIndex = 0; // Melacak tab yang aktif
 
   @override
   void initState() {
@@ -28,8 +36,15 @@ class _HomePageState extends State<HomePage> {
     randomKopi = coffeeList[Random().nextInt(coffeeList.length)];
   }
 
-  @override
-  Widget build(BuildContext context) {
+  // --- Fungsi untuk pindah tab ---
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // --- Widget untuk Tab Beranda (UI dari kodemu) ---
+  Widget _buildBerandaTab() {
     final backgroundColor = isDarkMode ? const Color(0xff2b231d) : const Color(0xfff3f0eb);
     final cardColor = isDarkMode ? const Color(0xff3a2f28) : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.brown[900];
@@ -43,47 +58,14 @@ class _HomePageState extends State<HomePage> {
       return matchesSearch && matchesRoast && matchesProcess;
     }).toList();
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.brown[900] : Colors.brown[700],
-        title: Text(
-          "Halo, ${widget.username} 👋",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              isDarkMode ? Icons.light_mode : Icons.dark_mode,
-              color: Colors.white,
-            ),
-            tooltip: "Ganti Tema",
-            onPressed: () {
-              setState(() => isDarkMode = !isDarkMode);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            tooltip: "Logout",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Padding(
+    // Kita pakai Container untuk atur background color tab ini
+    return Container(
+      color: backgroundColor,
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             const SizedBox(height: 12),
-
-
             TextField(
               decoration: InputDecoration(
                 hintText: "Cari kopi favoritmu...",
@@ -102,10 +84,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() => searchQuery = value);
               },
             ),
-
             const SizedBox(height: 16),
-
-            // 🏷️ Filter Row
             Row(
               children: [
                 Expanded(
@@ -115,9 +94,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       labelText: "Roast Level",
                       labelStyle: TextStyle(color: secondaryText),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       filled: true,
                       fillColor: isDarkMode ? Colors.brown[700] : Colors.brown[50],
                     ),
@@ -143,9 +120,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       labelText: "Processing",
                       labelStyle: TextStyle(color: secondaryText),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       filled: true,
                       fillColor: isDarkMode ? Colors.brown[700] : Colors.brown[50],
                     ),
@@ -165,10 +140,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
-            // ☕ Fun Fact Banner
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -184,8 +156,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.lightbulb,
-                      color: isDarkMode ? Colors.amber[200] : Colors.brown, size: 28),
+                  Icon(Icons.lightbulb, color: isDarkMode ? Colors.amber[200] : Colors.brown, size: 28),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -200,10 +171,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2),
-
             const SizedBox(height: 12),
-
-            // 🪔 Judul Section
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -215,10 +183,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 8),
-
-
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 20),
@@ -234,9 +199,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: Card(
                       color: cardColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       elevation: 5,
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
@@ -244,9 +207,7 @@ class _HomePageState extends State<HomePage> {
                           Hero(
                             tag: 'kopi_${kopi.nama}_${index}',
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.horizontal(
-                                left: Radius.circular(16),
-                              ),
+                              borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
                               child: Image.asset(
                                 kopi.gambar,
                                 width: 100,
@@ -274,15 +235,11 @@ class _HomePageState extends State<HomePage> {
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
-                                      Icon(Icons.location_on,
-                                          size: 16, color: secondaryText),
+                                      Icon(Icons.location_on, size: 16, color: secondaryText),
                                       const SizedBox(width: 4),
                                       Text(
                                         kopi.asal,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 13,
-                                          color: secondaryText,
-                                        ),
+                                        style: GoogleFonts.poppins(fontSize: 13, color: secondaryText),
                                       ),
                                     ],
                                   ),
@@ -317,6 +274,96 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // --- Widget untuk Tab Profil (Contoh) ---
+  Widget _buildProfilTab() {
+    final textColor = isDarkMode ? Colors.white : Colors.brown[900];
+    final backgroundColor = isDarkMode ? const Color(0xff2b231d) : const Color(0xfff3f0eb);
+    return Container(
+      color: backgroundColor,
+      child: Center(
+        child: Text(
+          "Halaman Profil",
+          style: GoogleFonts.poppins(fontSize: 20, color: textColor),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Daftar Halaman untuk Bottom Nav
+    final List<Widget> _halamanOptions = [
+      _buildBerandaTab(), // Indeks 0 (UI Canggihmu)
+      EnsiklopediaKopiPage(), // Indeks 1 (Halaman API)
+      _buildProfilTab(), // Indeks 2 (Contoh)
+    ];
+
+    return Scaffold(
+      // AppBar ini sekarang jadi AppBar UTAMA
+      appBar: AppBar(
+        backgroundColor: isDarkMode ? Colors.brown[900] : Colors.brown[700],
+        title: Text(
+          "Halo, ${widget.username} 👋",
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+            tooltip: "Ganti Tema",
+            onPressed: () {
+              setState(() => isDarkMode = !isDarkMode);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: "Logout",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            },
+          ),
+        ],
+      ),
+
+      // Body akan ganti-ganti sesuai tab
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _halamanOptions,
+      ),
+
+      // Bottom Navigasi Bar
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Beranda',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book), // Ganti ikon
+            label: 'Ensiklopedia API', // Ganti label
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.brown[800],
+        unselectedItemColor: Colors.brown[300],
+        backgroundColor: isDarkMode ? Colors.brown[900] : Colors.white,
+        onTap: _onItemTapped,
       ),
     );
   }

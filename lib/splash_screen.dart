@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
